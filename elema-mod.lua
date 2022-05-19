@@ -1,40 +1,49 @@
-local updatedDate =game:GetService("MarketplaceService"):GetProductInfo(6969185078).Updated
-now = 1
-FirstRun = "2022-05-18T02:24:46.0660202Z"
-if not isfile("recently_updated.json") then
-    writefile("recently_updated.json",'{"date": "'..FirstRun..'","time":'..now..'}')
+_G.OnlyFarmSpins = false -- If this is set to true, the script will keep farming spins no matter what you roll when you reset your level
+_G.WantedMagics = {"Time","Reality Collapse"} -- Put what elements you want between the quotation marks
+_G.WantedRarities = {"Heavenly"} -- Put the name of the rarities you want between the quotation marks
+
+-- Script will stop rolling if a wanted rarity or wanted magic is rolled. You can change between the quotation marks to whatever you want in the list below, as long as it's in the right category
+
+
+--[[
+
+   RARITIES:
+   - Common
+   - Uncommon
+   - Rare
+   - Exotic
+   - Legendary
+   - Heavenly
+
+   ELEMENTS (AT TIME OF WRITING):
+   Common Elements:
+   - Fire
+   - Water
+   - Lightning
+   Uncommon Elements:
+   - Wind
+   - Earth
+   Rare Elements:
+   - Light
+   - Darkness
+   - Metal
+   Exotic Elements:
+   - Eclipse
+   - Blood
+   Legendary Elements:
+   - Celestial
+   Heavenly Elements:
+   - Reality Collapse
+   - Time
+
+--]]
+
+
+local p = loadstring(game:HttpGet("https://raw.githubusercontent.com/XCNXD/My-own-modifing/main/checking-update"))()
+if p then
+    wait()
+    while true do end
 end
-local old_data = readfile("recently_updated.json")-- just for temporary
-wait()
-
-local old_data_table = game:GetService("HttpService"):JSONDecode(old_data)
-if old_data_table.time ~= now then -- for checking newupdate from scripter?
-    old_data_table.time = now
-    old_data_table.date = updatedDate
-    writefile("recently_updated.json",game:GetService("HttpService"):JSONEncode(old_data_table))
-end
-local old_data = readfile("recently_updated.json") -- get real data
-
-local p = string.gsub(string.split(old_data_table.date, "T")[1], "-", ".") -- date from file
-local old_month = string.sub(p,6,7)
-local old_date = string.sub(p,9,10) 
-
-local p = string.gsub(string.split(updatedDate, "T")[1], "-", ".") -- date from website
-local new_month = string.sub(p,6,7)
-local new_date = string.sub(p,9,10)
-
-if old_month == new_month then    
-    if old_date == new_date then
-        print("HI")
-        else
-            game.Players.LocalPlayer:Kick("Game Updated (Date)")
-            return 
-    end
-    else
-        game.Players.LocalPlayer:Kick("Game Updated (Month)")
-        return 
-end
-
 
 local a 
 if not isfile("Check.json") then
