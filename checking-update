@@ -29,9 +29,9 @@ if old_month == new_month then
         print("HI")
         else
             game.Players.LocalPlayer:Kick("Game Updated (Date)")
-            return 
+            return "AAA"
     end
     else
         game.Players.LocalPlayer:Kick("Game Updated (Month)")
-        return 
+        return "AAA"
 end
