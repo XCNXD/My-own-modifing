@@ -50,7 +50,7 @@ while true do
                          wait()
                          game:GetService("ReplicatedStorage").Events.SpellCast:FireServer({Tool,game.Players.LocalPlayer.Character.HumanoidRootPart.Position,Vector3.new(0,0,0),true})
                          local ownspell_now = library[game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Name]
-                         wait(ownspell_now.CastTime)
+                         wait()
                          game:GetService("ReplicatedStorage").Events.SpellCast:FireServer({Tool,game.Players.LocalPlayer.Character.HumanoidRootPart.Position})
                          wait()
                          Tool.Parent = game.Players.LocalPlayer.Backpack
