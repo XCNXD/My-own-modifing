@@ -1,0 +1,77 @@
+local library = require(game:GetService("ReplicatedStorage").SpellLibrary)
+
+local p = loadstring(game:HttpGet("https://raw.githubusercontent.com/XCNXD/My-own-modifing/main/checking-update"))()
+if p then
+    wait()
+    while true do end
+end
+
+for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+   v:Disable()
+end
+
+local Debounce = false
+repeat wait() until game.ReplicatedStorage:FindFirstChild("Events")
+
+local SpawnRemote = game.ReplicatedStorage.Events:WaitForChild("Spawn2")
+
+while true do 
+    if not Debounce and game.Players.LocalPlayer:FindFirstChild("PlayerGui") then
+        Debounce = true
+        local StatsGui = nil
+        local PlayButton = nil
+        local MPGui
+        for i,v in pairs(game.Players.LocalPlayer.PlayerGui:GetDescendants()) do
+            if v.Name == "StatsGUI" then
+                StatsGui = v
+            end
+            if v.Name == "ME" and v.Parent.Name == "MagicEnergyGUI" then
+                MPGui = v
+            end
+        end
+        if SpawnRemote.ClassName == "RemoteFunction" then -- changed to a remote function after the latest update, this is for compatibility
+            SpawnRemote:InvokeServer()
+        elseif SpawnRemote.ClassName == "RemoteEvent" then
+            pcall(function()
+                local Events = getconnections(game.Players.LocalPlayer.PlayerGui.MainGUI.Start.PlayButton.MouseButton1Click)
+                for i,v in pairs(Events) do
+                    v:Fire()
+                end
+            end)
+            SpawnRemote:FireServer()
+        end
+        wait(0.2)
+        if StatsGui ~= nil and game.Players.LocalPlayer.Character ~= nil and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+             local Tool = game.Players.LocalPlayer.Backpack:FindFirstChildOfClass("Tool") or game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+             if Tool ~= nil then
+                 for i,Tool in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+                     if Tool:IsA("Tool") then
+                         Tool.Parent = game.Players.LocalPlayer.Character
+                         wait()
+                         game:GetService("ReplicatedStorage").Events.SpellCast:FireServer({Tool,game.Players.LocalPlayer.Character.HumanoidRootPart.Position,Vector3.new(0,0,0),true})
+                         local ownspell_now = library[game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").Name]
+                         wait(ownspell_now.CastTime)
+                         game:GetService("ReplicatedStorage").Events.SpellCast:FireServer({Tool,game.Players.LocalPlayer.Character.HumanoidRootPart.Position})
+                         wait()
+                         Tool.Parent = game.Players.LocalPlayer.Backpack
+                     end
+                 end
+                 if MPGui ~= nil then
+                    local ManaNumbers = string.split(MPGui.Text,"/")
+                    local Mana = tonumber(ManaNumbers[1])
+                    local MaxMana = tonumber(ManaNumbers[2])
+                    local Threshold = MaxMana / 3
+                    if Mana ~= nil and MaxMana ~= nil and Mana < Threshold then
+                        game.Players.LocalPlayer.Character:BreakJoints()
+                        if SpawnRemote.ClassName == "RemoteFunction" then
+                            SpawnRemote:InvokeServer()
+                        elseif SpawnRemote.ClassName == "RemoteEvent" then
+                            SpawnRemote:FireServer()
+                        end
+                    end
+                 end
+            end
+        end
+        Debounce = false
+    end
+end
