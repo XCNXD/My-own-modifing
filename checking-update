@@ -1,7 +1,7 @@
 
 local updatedDate =game:GetService("MarketplaceService"):GetProductInfo(6969185078).Updated
-now = 1
-FirstRun = "2022-05-18T02:24:46.0660202Z"
+now = 2
+FirstRun = "2022-05-21T15:22:49.1208535Z"
 if not isfile("recently_updated.json") then
     writefile("recently_updated.json",'{"date": "'..FirstRun..'","time":'..now..'}')
 end
